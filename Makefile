@@ -6,7 +6,7 @@
 #    By: apigeon <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/30 16:08:04 by apigeon           #+#    #+#              #
-#    Updated: 2022/07/16 11:39:01 by apigeon          ###   ########.fr        #
+#    Updated: 2022/07/20 18:24:54 by apigeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,12 +32,15 @@ LIBFT		= $(LIBFT_DIR)/libft.a
 ### SOURCE FILES ###
 SRCS	= 	main.c
 
+### HEADER FILES ###
+HEADERS	=	$(addprefix $(HEADER)/, binary_name.h)
+
 ### OBJECTS ###
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
 ### COLORS ###
-NOC		= \033[0m
-BLACK	= \033[1;30m
+RESET	= \033[0m
+BLACK	= \034[1;30m
 RED		= \033[1;31m
 GREEN	= \033[1;32m
 YELLOW	= \033[1;33m
@@ -50,19 +53,19 @@ WHITE	= \033[1;37m
 all:	$(NAME)
 
 $(LIBFT):
-	@echo "$(GREEN)Compiling $(LIBFT_DIR)$(NOC)"
+	@echo "$(NAME): $(GREEN)Compiling $(LIBFT_DIR)$(RESET)"
 	@make addon -C $(LIBFT_DIR)
 
 $(NAME):	$(LIBFT) $(OBJ_DIR) $(OBJS)
-	$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) $(LINKS) -o $(NAME)
-	@echo "$(GREEN)Project $(NAME) successfully compiled$(NOC)"
+	@$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) $(LINKS) -o $(NAME)
+	@echo "$(NAME): $(GREEN)Project successfully compiled$(RESET)"
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(HEADER)/$(NAME).h
+$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(HEADERS)
 	@$(CC) $(CFLAGS) -I$(HEADER) -I$(LIBFT_DIR)/$(HEADER) -c $< -o $@
-	@echo "$(BLUE)Creating object file -> $(WHITE)$(notdir $@)... $(GREEN)[Done]$(NOC)"
+	@echo "$(NAME): $(BLUE)Creating object file -> $(WHITE)$(notdir $@)... $(GREEN)[Done]$(RESET)"
 
 run: $(NAME)
 	@./$(NAME) $(ARGS)
@@ -72,12 +75,12 @@ val: $(NAME)
 
 clean:
 	@make clean -C $(LIBFT_DIR)
-	@echo "$(RED)Supressing $(NOC)$(NAME) $(RED)object files$(NOC)"
+	@echo "$(NAME): $(RED)Supressing object files$(RESET)"
 	@rm -rf $(OBJ_DIR)
 
 fclean:	clean
 	@make fclean -C $(LIBFT_DIR)
-	@echo "$(RED)Supressing $(NOC)$(NAME) $(RED)program file$(NOC)"
+	@echo "$(NAME): $(RED)Supressing program file$(RESET)"
 	@rm -f $(NAME)
 
 re:	fclean all

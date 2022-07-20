@@ -3,3 +3,4 @@ bin/
 a.out
 **/*.o
 tags
+binary_name
