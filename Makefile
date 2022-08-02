@@ -6,13 +6,14 @@
 #    By: apigeon <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/30 16:08:04 by apigeon           #+#    #+#              #
-#    Updated: 2022/07/20 18:44:13 by apigeon          ###   ########.fr        #
+#    Updated: 2022/08/02 21:10:15 by apigeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 ### COMPILATION ###
 CC		= cc
+MAKE	= make
 CFLAGS	= -Wall -Werror -Wextra
 LFLAGS	= -L$(LIBFT_DIR)
 LINKS	= -lft
@@ -20,7 +21,6 @@ LINKS	= -lft
 ### EXECUTABLE ###
 NAME		= binary_name
 ARGS		= args
-VALGRIND	= valgrind --track-origins=yes --leak-check=full
 
 ### INCLUDES ###
 OBJ_DIR		= bin
@@ -33,7 +33,8 @@ LIBFT		= $(LIBFT_DIR)/libft.a
 SRCS	= 	main.c
 
 ### HEADER FILES ###
-HEADERS	=	$(addprefix $(HEADER)/, binary_name.h)
+HEADER_FILES	= binary_name.h
+HEADERS			= $(addprefix $(HEADER)/, $(HEADER_FILES))
 
 ### OBJECTS ###
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
@@ -49,12 +50,20 @@ PURPLE	= \033[1;35m
 CYAN	= \033[1;36m
 WHITE	= \033[1;37m
 
+### OTHERS ###
+UNAME_S = $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	VALGRIND = leaks --list --groupByType --atExit --
+else
+	VALGRIND = valgrind --track-origins=yes --leak-check=full
+endif
+
 ### RULES ###
 all:	$(NAME)
 
 $(LIBFT):
 	@echo "$(NAME): $(GREEN)Compiling $(LIBFT_DIR)$(RESET)"
-	@make addon -C $(LIBFT_DIR)
+	@$(MAKE) addon -C $(LIBFT_DIR)
 
 $(NAME):	$(LIBFT) $(OBJ_DIR) $(OBJS)
 	@$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) $(LINKS) -o $(NAME)
@@ -75,12 +84,12 @@ val: $(NAME)
 	@$(VALGRIND) ./$(NAME) $(ARGS)
 
 clean:
-	@make clean -C $(LIBFT_DIR)
+	@$(MAKE) clean -C $(LIBFT_DIR)
 	@echo "$(NAME): $(RED)Supressing object files$(RESET)"
 	@rm -rf $(OBJ_DIR)
 
 fclean:	clean
-	@make fclean -C $(LIBFT_DIR)
+	@$(MAKE) fclean -C $(LIBFT_DIR)
 	@echo "$(NAME): $(RED)Supressing program file$(RESET)"
 	@rm -f $(NAME)
 
