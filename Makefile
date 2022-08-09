@@ -6,26 +6,26 @@
 #    By: apigeon <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/30 16:08:04 by apigeon           #+#    #+#              #
-#    Updated: 2022/08/02 21:10:15 by apigeon          ###   ########.fr        #
+#    Updated: 2022/08/09 21:54:40 by apigeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 ### COMPILATION ###
 CC		= cc
-MAKE	= make
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra -g
+INCLUDE	= -I$(H_DIR) -I$(LIBFT_DIR)/$(H_DIR)
 LFLAGS	= -L$(LIBFT_DIR)
 LINKS	= -lft
 
 ### EXECUTABLE ###
-NAME		= binary_name
-ARGS		= args
+NAME	= binary_name
+ARGS	= args
 
 ### INCLUDES ###
 OBJ_DIR		= bin
 SRC_DIR		= src
-HEADER		= incl
+H_DIR		= incl
 LIBFT_DIR	= libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 
@@ -33,8 +33,8 @@ LIBFT		= $(LIBFT_DIR)/libft.a
 SRCS	= 	main.c
 
 ### HEADER FILES ###
-HEADER_FILES	= binary_name.h
-HEADERS			= $(addprefix $(HEADER)/, $(HEADER_FILES))
+H_FILES	= binary_name.h
+HEADERS	= $(addprefix $(H_DIR)/, $(H_FILES))
 
 ### OBJECTS ###
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
@@ -67,14 +67,14 @@ $(LIBFT):
 
 $(NAME):	$(LIBFT) $(OBJ_DIR) $(OBJS)
 	@$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) $(LINKS) -o $(NAME)
-	@echo "$(NAME): $(BLUE)Creating object file -> $(WHITE)$(notdir $@)... $(GREEN)[Done]$(RESET)"
+	@echo "$(NAME): $(BLUE)Creating program file -> $(WHITE)$(notdir $@)... $(GREEN)[Done]$(RESET)"
 	@echo "$(NAME): $(GREEN)Project successfully compiled$(RESET)"
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(HEADERS)
-	@$(CC) $(CFLAGS) -I$(HEADER) -I$(LIBFT_DIR)/$(HEADER) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "$(NAME): $(BLUE)Creating object file -> $(WHITE)$(notdir $@)... $(GREEN)[Done]$(RESET)"
 
 run: $(NAME)
