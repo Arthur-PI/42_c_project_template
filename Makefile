@@ -6,14 +6,16 @@
 #    By: apigeon <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/30 16:08:04 by apigeon           #+#    #+#              #
-#    Updated: 2022/08/09 21:54:40 by apigeon          ###   ########.fr        #
+#    Updated: 2022/10/19 18:15:29 by apigeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 ### COMPILATION ###
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra -g
+CFLAGS	= -Wall -Wextra
+CFLAGS	+= -Werror
+CFLAGS	+= -g
 INCLUDE	= -I$(H_DIR) -I$(LIBFT_DIR)/$(H_DIR)
 LFLAGS	= -L$(LIBFT_DIR)
 LINKS	= -lft
