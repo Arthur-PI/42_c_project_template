@@ -6,7 +6,7 @@
 #    By: apigeon <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/30 16:08:04 by apigeon           #+#    #+#              #
-#    Updated: 2022/12/11 20:02:14 by apigeon          ###   ########.fr        #
+#    Updated: 2022/12/11 20:23:53 by apigeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,15 +87,13 @@ $(LIBFT):
 	@echo "$(NAME): $(GREEN)Compiling $(LIBFT_DIR)$(RESET)"
 	@$(MAKE) addon -C $(LIBFT_DIR)
 
-$(NAME):	$(LIBFT) $(OBJ_DIR) $(OBJS)
+$(NAME):	$(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $(LFLAGS) $(OBJS) $(LINKS) -o $(NAME)
 	@echo "$(NAME): $(BLUE)Creating program file -> $(WHITE)$(notdir $@)... $(GREEN)[Done]$(RESET)"
 	@echo "$(NAME): $(GREEN)Project successfully compiled$(RESET)"
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-
-$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(HEADERS)
+$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 	@echo "$(NAME): $(BLUE)Creating object file -> $(WHITE)$(notdir $@)... $(GREEN)[Done]$(RESET)"
 
