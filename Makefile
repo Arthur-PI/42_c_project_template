@@ -29,7 +29,7 @@ FTEST		?= false
 FNOERROR	?= false
 
 ifeq ($(FDEBUG),true)
-	CFLAGS += -g3 -Os
+	CFLAGS += -g3
 endif
 
 ifeq ($(FNOERROR),false)
@@ -54,7 +54,7 @@ LIBFT_DIR	= libft
 LIBFT		= $(LIBFT_DIR)/libft.a
 
 ### SOURCE FILES ###
-SRCS	= 	main.c
+SRCS	+=
 
 ### OBJECTS ###
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

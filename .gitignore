@@ -6,3 +6,4 @@ tags
 binary_name
 compile_commands.json
 .cache/
+.idea/
