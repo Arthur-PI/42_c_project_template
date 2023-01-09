@@ -14,9 +14,6 @@
 ### COMPILATION ###
 CC		= cc
 CFLAGS	= -Wall -Wextra
-CFLAGS	+= -Wshadow -Wpedantic -Wuninitialized -Wmissing-include-dirs -Wundef -Winvalid-pch
-CFLAGS	+= -Winit-self -Wswitch-enum -Wswitch-default -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k
-CFLAGS	+= -Wdouble-promotion -Wfloat-equal -Wpointer-arith
 CFLAGS	+= -MMD -MP
 INCLUDE	= -I$(H_DIR) -I$(LIBFT_DIR)/$(H_DIR)
 LFLAGS	= -L$(LIBFT_DIR)
@@ -27,13 +24,30 @@ LINKS	= -lft
 FDEBUG		?= false
 FTEST		?= false
 FNOERROR	?= false
-
-ifeq ($(FDEBUG),true)
-	CFLAGS += -g3
-endif
+FASAN		?= false
+FTSAN		?= false
+FEXTRA		?= false
 
 ifeq ($(FNOERROR),false)
-	CFLAGS += -Werror
+	CFLAGS	+= -Werror
+endif
+
+ifeq ($(FDEBUG),true)
+	CFLAGS	+= -g3
+endif
+
+ifeq ($(FASAN),true)
+	CFLAGS	+= -fsanitize=address
+endif
+
+ifeq ($(FTSAN),true)
+	CFLAGS	+= -fsanitize=thread
+endif
+
+ifeq ($(FEXTRA),true)
+	CFLAGS	+= -Wshadow -Wpedantic -Wuninitialized -Wmissing-include-dirs -Wundef -Winvalid-pch
+	CFLAGS	+= -Winit-self -Wswitch-enum -Wswitch-default -Wformat=2 -Wformat-nonliteral -Wformat-security -Wformat-y2k
+	CFLAGS	+= -Wdouble-promotion -Wfloat-equal -Wpointer-arith
 endif
 
 ifeq ($(FTEST),true)
@@ -101,6 +115,14 @@ run: $(NAME)
 
 val: $(NAME)
 	@$(VALGRIND) ./$(NAME) $(ARGS)
+
+info:
+	@echo "$(BLUE)NAME$(RESET): $(NAME)"
+	@echo "$(BLUE)CC$(RESET): $(CC)"
+	@echo "$(BLUE)CFLAGS$(RESET): $(CFLAGS)"
+	@echo "$(BLUE)INCLUDE$(RESET): $(INCLUDE)"
+	@echo "$(BLUE)LFLAGS$(RESET): $(LFLAGS)"
+	@echo "$(BLUE)LINKS$(RESET): $(LINKS)"
 
 clean:
 	@$(MAKE) clean -C $(LIBFT_DIR)
